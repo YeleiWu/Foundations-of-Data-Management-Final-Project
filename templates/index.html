@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% import "macros.html" as macros %}
+{% import "map.html" as map %}
+{% block head_css %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+{{ map.css() }}
+{% endblock %}
+
+{% block container %}
+<!--head-->
+<div class="head mb-5 mt-5  ">
+    <h1 align="center">ML2X TOOL</h1>
+</div>
+<!--<div class="alert alert-success alert-dismissible fade show">-->
+<!--    <strong>Success!</strong> Your message has been sent successfully.-->
+<!--    <button type="button" class="close" data-dismiss="alert">&times;</button>-->
+<!--</div>-->
+<!--top-->
+<div class="top">
+
+    <!--    databases-->
+    <div class="input-group mb-3 mr-5 db">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Database</span>
+        </div>
+        <select class="custom-select database" onchange="dbChange(this)"></select>
+    </div>
+    <!--    tables-->
+    <div class="input-group mb-3 mr-2 table">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Table</span>
+        </div>
+        <select class="custom-select table init-table" onchange="tableChange(this)"></select>
+    </div>
+    <button class="btn btn-primary mb-3" id="reset" style="margin-left:30%">Reset</button>
+</div>
+
+
+<!--mid-->
+<!--<div class="form-group form-check">-->
+<!--    <input type="checkbox" class="form-check-input" id="attributecheck">-->
+<!--    <label class="form-check-label" for="attributecheck">Show attributes of referenced table</label>-->
+<!--</div>-->
+<div class="card mid">
+
+    <ul class="nav  nav-fill nav-tabs card-header" id="myTab" style="padding:0px">
+        <li class="nav-item">
+            <a class="nav-link" href="#join"><h5>Join</h5></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#where"><h5>Selection</h5></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#group"><h5>Group by</h5></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#having"><h5>Having</h5></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#order"><h5>Order by</h5></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#attribute"><h5>Projection</h5></a>
+        </li>
+    </ul>
+    <div id="myTabContent" class="tab-content card-body">
+        <div class="tab-pane fade" id="join">
+            {{ macros.join() }}
+        </div>
+        <div class="tab-pane fade" id="where">
+            {{ macros.where() }}
+        </div>
+        <div class="tab-pane fade" id="group">
+            {{ macros.group() }}
+        </div>
+        <div class="tab-pane fade" id="having">
+            {{ macros.having() }}
+        </div>
+        <div class="tab-pane fade" id="order">
+            {{ macros.order() }}
+        </div>
+        <div class="tab-pane fade" id="attribute">
+            {{ macros.attribute() }}
+        </div>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">limit</span>
+                    </div>
+                    <input type="text" class="limit-input form-control">
+                    <div class="offset input-group-prepend">
+                        <span class="input-group-text">offset</span>
+                    </div>
+                    <input type="text" class="offset offset-input form-control">
+                </div>
+                <div class="input-group">
+
+                </div>
+                <div role="group" aria-label="First group">
+                    <!--                    <button class="btn btn-primary ml-5" data-toggle="modal" data-target="#previewModal"-->
+                    <!--                            onclick="preview()">Preview-->
+                    <!--                    </button>-->
+
+                    <button class="btn btn-primary ml-5" onclick="preview()">Produce SQL</button>
+                    <button class="btn btn-primary ml-5" data-toggle="modal" data-target="#queryModal"
+                            onclick="query()">Query
+                    </button>
+
+                </div>
+
+            </div>
+        </li>
+    </ul>
+</div>
+<!--<button class="btn btn-primary ml-5" onclick="produceSQLDict()">test</button>-->
+<div class="card" id="preview_card" style="width: 100%; margin-bottom: 100px">
+    <div class="card-header">
+        <h4 style="display:inline-block;">Query Preview</h4>
+        <div class="input-group" style="width:40%;float:right;">
+            <div class="input-group-prepend"><span class="input-group-text">Language</span></div>
+            <select class="custom-select languages">
+                <option value='SUM'>Dataframe</option>
+                <option value='AVG'>MongoDB</option>
+                <option value='MAX'>Spark</option>
+                <option value='MAX'>MapView</option>
+            </select>
+            <button class="btn btn-primary ml-5 btn-translate">Translate</button>
+            <!--            <button type="button" class="btn btn-secondary btn-add add-order">Add</button>-->
+        </div>
+        <!--        <button class="btn btn-primary ml-5" style="float:right;" onclick="translate()">Translate</button>-->
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">SQL</h5>
+        <code id="sql_preview"></code>
+        <div>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#queryModal"
+                    onclick="query()" style="float:right;">Query
+            </button>
+        </div>
+    </div>
+    <div class="card-footer text-muted translation">
+        <h5 class="card-title translation-type"></h5>
+        <code class="translation-content"></code>
+        <div>
+            <button class="btn btn-primary queryTL" id="queryTL" onclick="queryTL()" style="float:right;">Query
+            </button>
+        </div>
+    </div>
+
+</div>
+{{ map.html() }}
+<!-- Modal -->
+{{ macros.preview() }}
+{{ macros.query() }}
+{{ macros.queryTL() }}
+{{ macros.wait() }}
+{% endblock %}
+
+{% block tail_js %}
+{{ super() }}
+<script src="{{ url_for('static',filename='js/ajaxtool.js') }}"></script>
+<script src="{{ url_for('static',filename='js/add.js') }}"></script>
+<script src="{{ url_for('static',filename='js/index.js') }}"></script>
+{{ map.script() }}
+{% endblock %}

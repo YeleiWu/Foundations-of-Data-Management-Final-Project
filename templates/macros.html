@@ -1,0 +1,432 @@
+{% macro where() %}
+
+<div class="input-group mb-3 clause">
+    <div class="input-group-prepend dropdown">
+        <button class="btn btn-secondary dropdown-toggle dropdown-logic" type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            and
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item active">and</button>
+            <button class="dropdown-item">or</button>
+            <button class="dropdown-item">not</button>
+        </div>
+    </div>
+    <select class="custom-select attributes ">
+    </select>
+    <div class="input-group-prepend dropdown compare">
+        <button class="btn btn-secondary dropdown-toggle dropdown-compare" type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            =
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item active">=</button>
+            <button class="dropdown-item">!=</button>
+            <button class="dropdown-item">></button>
+            <button class="dropdown-item"><</button>
+            <button class="dropdown-item ">>=</button>
+            <button class="dropdown-item "><=</button>
+            <button class="dropdown-item ">between</button>
+            <button class="dropdown-item ">in</button>
+            <button class="dropdown-item ">not in</button>
+        </div>
+    </div>
+    <input type="text" class="where-clause form-control value" placeholder="Value"
+           aria-label="Text input with segmented dropdown button">
+    <div class="where-clause input-group-prepend between" style="display:none">
+        <span class="input-group-text">and</span>
+    </div>
+    <input type="text" class="where-clause and-input form-control between" style="display:none">
+    <!--    <select multiple class="where-clause in" data-role="tagsinput" style="display:none"></select>-->
+    <input type="text" class="where-clause in" data-role="tagsinput" style="display:none"/>
+    <!--    <div class="input-group-prepend dropdown compare">-->
+    <!--        <button class="btn btn-secondary dropdown-toggle dropdown-compare" type="button"-->
+    <!--                data-toggle="dropdown"-->
+    <!--                aria-haspopup="true" aria-expanded="false">-->
+    <!--            =-->
+    <!--        </button>-->
+    <!--        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+    <!--            <button class="dropdown-item active">=</button>-->
+    <!--            <button class="dropdown-item">!=</button>-->
+    <!--            <button class="dropdown-item">></button>-->
+    <!--            <button class="dropdown-item"><</button>-->
+    <!--            <button class="dropdown-item"><></button>-->
+    <!--            <button class="dropdown-item ">>=</button>-->
+    <!--            <button class="dropdown-item "><=</button>-->
+    <!--            <button class="dropdown-item ">between</button>-->
+    <!--            <button class="dropdown-item ">like</button>-->
+    <!--            <button class="dropdown-item ">in</button>-->
+    <!--            <button class="dropdown-item ">not in</button>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <input type="text" class="where-clause form-control value" placeholder="Value"-->
+    <!--           aria-label="Text input with segmented dropdown button">-->
+    <!--    <div class="where-clause input-group-prepend between" style="display:none">-->
+    <!--        <span class="input-group-text">and</span>-->
+    <!--    </div>-->
+    <!--    <input type="text" class="where-clause and-input form-control between" style="display:none">-->
+    <!--    <input type="text" class="where-clause in" data-role="tagsinput" style="display:none"/>-->
+    <button type="button" class="btn btn-secondary btn-add add-where">Add</button>
+</div>
+<hr class="divider">
+<div class="input-group-prepend mb-3 where-result" style="width: 100% !important">
+    <div class="input-group-prepend">
+        <span class="input-group-text">where</span>
+    </div>
+    <input type="text" id="where-input" class="input-result" data-role="tagsinput"/>
+</div>
+{% endmacro %}
+
+{% macro group() %}
+<div class="input-group mb-3">
+
+    <select class="custom-select attributes"></select>
+    <button type="button" class="btn btn-secondary btn-add add-group">Add</button>
+</div>
+<hr class="divider">
+<div class="input-group-prepend mb-3 group-result" style="width: 100% !important">
+    <div class="input-group-prepend">
+        <span class="input-group-text">group by</span>
+    </div>
+    <!--    <select multiple data-role="tagsinput"></select>-->
+    <input type="text" id="group-input" class="input-result" data-role="tagsinput"/>
+</div>
+{% endmacro %}
+
+{% macro having() %}
+<!--<div class="input-group mb-3">-->
+<!--    <div class="input-group-prepend">-->
+<!--        <span class="input-group-text">Function</span>-->
+<!--    </div>-->
+<!--    <select class="custom-select functions">-->
+<!--        <option value='SUM'>SUM</option>-->
+<!--        <option value='MAX'>MAX</option>-->
+<!--        <option value='MIN'>MIN</option>-->
+<!--        <option value='COUNT'>COUNT</option>-->
+<!--    </select>-->
+<!--    <div class="input-group-prepend">-->
+<!--        <span class="input-group-text">Attribute</span>-->
+
+<!--    </div>-->
+<!--    <select class="custom-select attributes having-function-attributes"></select>-->
+<!--    <button type="button" class="btn btn-secondary btn-add add-having-attribute">Add</button>-->
+<!--</div>-->
+<div class="input-group mb-3 having-clause">
+
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle dropdown-logic" type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            and
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item active">and</button>
+            <button class="dropdown-item">or</button>
+            <button class="dropdown-item">not</button>
+        </div>
+    </div>
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            Func<input type="checkbox" class="form-check-input checkbox-having-attribute">
+        </span>
+    </div>
+    <select class="custom-select functions">
+        <option value='count'>count</option>
+        <option value='sum'>sum</option>
+        <option value='avg'>avg</option>
+        <option value='max'>max</option>
+        <option value='min'>min</option>
+    </select>
+    <div class="input-group-prepend">
+        <span class="input-group-text">Attribute</span>
+
+    </div>
+    <!--    <select class="custom-select attributes having-function-attributes"></select>-->
+    <select class="custom-select group-attributes">
+    </select>
+    <!--    <div class="input-group-prepend dropdown">-->
+    <!--        <button class="btn btn-secondary dropdown-toggle dropdown-compare" type="button"-->
+    <!--                data-toggle="dropdown"-->
+    <!--                aria-haspopup="true" aria-expanded="false">-->
+    <!--            =-->
+    <!--        </button>-->
+    <!--        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+    <!--            <button class="dropdown-item active">=</button>-->
+    <!--            <button class="dropdown-item">></button>-->
+    <!--            <button class="dropdown-item"><</button>-->
+    <!--            <button class="dropdown-item ">>=</button>-->
+    <!--            <button class="dropdown-item "><=</button>-->
+    <!--            <button class="dropdown-item ">BETWEEN</button>-->
+    <!--            <button class="dropdown-item ">LIKE</button>-->
+    <!--            <button class="dropdown-item ">IN</button>-->
+    <!--            <button class="dropdown-item ">NOT IN</button>-->
+    <!--        </div>-->
+    <!--    </div>-->
+    <!--    <input type="text" class="form-control value" placeholder="Value"-->
+    <!--           aria-label="Text input with segmented dropdown button">-->
+    <div class="input-group-prepend dropdown compare">
+        <button class="btn btn-secondary dropdown-toggle dropdown-compare" type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            =
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item active">=</button>
+            <button class="dropdown-item">!=</button>
+            <button class="dropdown-item">></button>
+            <button class="dropdown-item"><</button>
+            <button class="dropdown-item ">>=</button>
+            <button class="dropdown-item "><=</button>
+            <button class="dropdown-item ">between</button>
+            <button class="dropdown-item ">in</button>
+            <button class="dropdown-item ">not in</button>
+        </div>
+    </div>
+    <input type="text" class="where-clause form-control value" placeholder="Value"
+           aria-label="Text input with segmented dropdown button">
+    <div class="where-clause input-group-prepend between" style="display:none">
+        <span class="input-group-text">and</span>
+    </div>
+    <input type="text" class="where-clause and-input form-control between" style="display:none">
+    <input type="text" class="where-clause in" data-role="tagsinput" style="display:none"/>
+    <button type="button" class="btn btn-secondary btn-add add-having">Add</button>
+
+</div>
+<hr class="divider">
+<div class="input-group-prepend mb-3 having-result" style="width: 100% !important">
+    <div class="input-group-prepend">
+        <span class="input-group-text">having</span>
+    </div>
+    <!--    <select multiple data-role="tagsinput"></select>-->
+    <input type="text" id="having-input" class="input-result" data-role="tagsinput"/>
+</div>
+{% endmacro %}
+
+{% macro order() %}
+<div class="input-group mb-3 mt-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            Function<input type="checkbox" class="form-check-input checkbox-order">
+        </span>
+    </div>
+    <select class="custom-select functions">
+        <option value='count'>count</option>
+        <option value='sum'>sum</option>
+        <option value='avg'>avg</option>
+        <option value='max'>max</option>
+        <option value='min'>min</option>
+    </select>
+    <div class="input-group-prepend">
+        <span class="input-group-text">Attribute</span>
+
+    </div>
+    <select class="custom-select group-attributes"></select>
+    <div class="input-group-prepend dropdown">
+        <button class="btn btn-secondary dropdown-toggle dropdown-order" type="button" id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            ASC
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item active">ASC</button>
+            <button class="dropdown-item">DESC</button>
+        </div>
+    </div>
+    <button type="button" class="btn btn-secondary btn-add add-order">Add</button>
+</div>
+<hr class="divider">
+<div class="input-group-prepend mb-3 order-result" style="width: 100% !important">
+    <span class="input-group-text">order by</span>
+    <!--    <select multiple data-role="tagsinput"></select>-->
+    <input type="text" id="order-input" class="input-result" data-role="tagsinput"/>
+</div>
+{% endmacro %}
+
+{% macro join() %}
+
+<!--    tables-->
+<!--<div class="input-group mb-3 mr-2 table">-->
+<!--    <div class="input-group-prepend">-->
+<!--        <span class="input-group-text">table</span>-->
+<!--    </div>-->
+<!--    <select class="custom-select table from-table"></select>-->
+<!--    <button type="button" class="btn btn-secondary btn-add add-table">Add</button>-->
+<!--</div>-->
+<!--<div class="input-group-prepend mb-3 from-result" style="width: 100% !important">-->
+<!--    <div class="input-group-prepend">-->
+<!--        <span class="input-group-text">from</span>-->
+<!--    </div>-->
+<!--    <input type="text" id="table-input"  data-role="tagsinput"/>-->
+<!--</div>-->
+
+<!--        <div class="form-group form-check">-->
+<!--            <input type="checkbox" class="form-check-input" id="joincheck">-->
+<!--            <label class="form-check-label" for="joincheck">Join referenced table</label>-->
+<!--        </div>-->
+<div class="input-group mb-3 dropdown join-part">
+    <div class="input-group-prepend">
+        <button class="btn btn-secondary dropdown-toggle dropdown-join" type="button"
+                data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+            join
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <button class="dropdown-item active">join</button>
+            <button class="dropdown-item">left join</button>
+            <button class="dropdown-item">right join</button>
+            <!--            <button class="dropdown-item">full join</button>-->
+        </div>
+    </div>
+    <select class="custom-select join-tables" onchange="fkTableChange(this)"></select>
+    <div class="input-group-prepend" style="margin-left:5%">
+        <span class="input-group-text">ON</span>
+    </div>
+    <input type="text" style="float:right;width: 100px;" class="form-control join-fk-attributes"
+           aria-label="Text input with segmented dropdown button" disabled>
+    <!--    <select class="custom-select "></select>-->
+    <div class="input-group-prepend">
+        <span class="input-group-text">=</span>
+    </div>
+    <input type="text" style="float:right;width: 100px;" class="form-control join-attributes"
+           aria-label="Text input with segmented dropdown button" disabled>
+    <button type="button" class="btn btn-secondary btn-add add-join">Add</button>
+</div>
+<div class="divider join-part"></div>
+<div class="input-group-prepend mb-3 join-part " style="width: 100% !important">
+    <div class="input-group-prepend">
+        <span class="input-group-text">join</span>
+    </div>
+    <input type="text" id="join-input" class="input-result" data-role="tagsinput"/>
+</div>
+
+
+<!--<div class="input-group mb-3 mr-2 from">-->
+<!--    <div class="input-group-prepend">-->
+<!--        <span class="input-group-text">from</span>-->
+<!--    </div>-->
+<!--    <input type="text" data-role="tagsinput">-->
+<!--</div>-->
+
+
+{% endmacro %}
+
+{% macro attribute() %}
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            Function<input type="checkbox" class="form-check-input checkbox-attribute">
+        </span>
+        <!--        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+        <!--            <button class="dropdown-item active">AND</button>-->
+        <!--            <button class="dropdown-item">OR</button>-->
+        <!--        </div>-->
+    </div>
+    <select class="custom-select functions">
+        <option value='count'>count</option>
+        <option value='sum'>sum</option>
+        <option value='avg'>avg</option>
+        <option value='max'>max</option>
+        <option value='min'>min</option>
+    </select>
+    <div class="input-group-prepend">
+        <span class="input-group-text">Attribute</span>
+
+    </div>
+    <select class="custom-select group-attributes"></select>
+    <button type="button" class="btn btn-secondary add-attribute">Add</button>
+<!--    <button type="button" class="btn btn-secondary remove-all-attribute">Remove All</button>-->
+</div>
+<hr class="divider">
+<!--<input type="text" name="tags" id="tags" class="form-control">-->
+<input type="text" id="attribute-input" class="input-result" data-role="tagsinput"/>
+{% endmacro %}
+
+{% macro preview() %}
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">SQL Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+{% macro query() %}
+<div class="modal fade" id="queryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
+            <!--            style="display: inline-block; width: auto;"-->
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">SQL Result</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="example" class="display" style="width:100%;">
+                    <thead></thead>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro queryTL() %}
+<div class="modal fade" id="queryTLModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content ">
+            <!--            style="display: inline-block; width: auto;"-->
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="overflow:scroll; padding: 3%; max-height: 650px;">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{% macro wait() %}
+<div class="modal fade" id="waitModal" tabindex="-2">
+    <div class="modal-dialog">
+        <div class="modal-content ">
+            <!--            style="display: inline-block; width: auto;"-->
+            <div class="modal-header">
+                <h5 class="modal-title">Waiting</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                         aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}

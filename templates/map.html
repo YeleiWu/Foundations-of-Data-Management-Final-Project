@@ -1,0 +1,393 @@
+{% macro css() %}
+<style>
+    #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #infoDiv {
+            background-color: white;
+            /* color: black; */
+            /* padding: 6px; */
+            width: 250px;
+            padding-top:10px;
+            padding-left:20px;
+        }
+
+
+
+
+</style>
+<link rel="stylesheet" href="https://js.arcgis.com/4.17/esri/css/main.css">
+{% endmacro %}
+
+{% macro script() %}
+<script src="https://js.arcgis.com/4.17/"></script>
+<script>
+        require(["dojo/dom", "dojo/on",
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/widgets/Sketch",
+            "esri/layers/FeatureLayer",
+            "esri/layers/GraphicsLayer",
+            "esri/Graphic",
+            "esri/tasks/support/FeatureSet",
+            "esri/geometry/SpatialReference",
+            "esri/symbols/SimpleMarkerSymbol",
+            "esri/symbols/SimpleFillSymbol",
+            "esri/symbols/SimpleLineSymbol",
+            "esri/tasks/support/LinearUnit",
+            "esri/tasks/QueryTask",
+            "esri/tasks/support/Query",
+            "esri/tasks/Geoprocessor",
+            "esri/widgets/Legend",
+            "esri/symbols/WebStyleSymbol"
+        ], function (dom, on, Map, MapView, Sketch, FeatureLayer,
+            GraphicsLayer, Graphic, FeatureSet, SpatialReference,
+            SimpleMarkerSymbol, SimpleFillSymbol, SimpleLineSymbol,
+            LinearUnit, QueryTask, Query, Geoprocessor, Legend,WebStyleSymbol) {
+            var wellTypeSelect = document.getElementById("well-type");
+            var map = new Map({
+                basemap: "topo-vector"
+            });
+
+            var popTemplate = {
+                title: "Attributes",
+                content: [{
+                    type: "fields",
+                    fieldInfos: [{
+                        fieldName: "name",
+                        label: "Name",
+                        format: {
+                            places: 0
+                        },
+                        visible: true
+                    }, {
+                        fieldName: "neighbourh",
+                        label: "Neighbourhood",
+                        format: {
+                            places: 0
+                        },
+                        visible: true
+                    }, {
+                        fieldName: "room_type",
+                        label: "RoomType",
+                        format: {
+                            places: 0
+                        },
+                        visible: true
+                    }, {
+                        fieldName: "price",
+                        label: "Price",
+                        format: {
+                            places: 0
+                        },
+                        visible: true
+                    }, {
+                        fieldName: "longitude",
+                        label: "Longitude",
+                        format: {
+                            places: 3
+                        },
+                        visible: true
+                    }, {
+                        fieldName: "latitude",
+                        label: "Latitude",
+                        format: {
+                            places: 3
+                        },
+                        visible: true
+                    }]
+                }]
+            }
+            var popNeighbour = {
+                title: "Attributes",
+                content: [{
+                 type: "fields",
+                    fieldInfos: [{
+                    fieldName: "neighbourhood",
+                    label: "Neighbourhood",
+                    format: {
+                        places: 0
+                    },
+                    visible: true
+                }, {
+                    fieldName: "Shape_Area",
+                    label: "Area",
+                    format: {
+                        places: 0
+                    },
+                    visible: true
+                }]
+                }]
+            }
+            const labelClass = {
+                // autocasts as new LabelClass()
+                symbol: {
+                    type: "text", // autocasts as new TextSymbol()
+                    color: "black",
+                    font: { // autocast as new Font()
+                        family: "Playfair Display",
+                        size: 12,
+                        weight: "bold"
+                    }
+                },
+                labelPlacement: "above-center",
+                labelExpressionInfo: {
+                    expression: "$feature.neighbourhood"
+                }
+            };
+            var view = new MapView({
+                container: "viewDiv",
+                map: map,
+                extent: {
+                    // autocasts as new Extent()
+                    xmin: -118.934220000353,
+                    ymin: 33.3387700001355,
+                    xmax: -117.654179999807,
+                    ymax: 34.8111899996188,
+                    spatialReference: 4326
+                }
+            });
+            view.ui.add("infoDiv", "top-right");
+            // view.ui.add("pop", "bottom-right");
+            listing_url = "https://gis-portal.usc.edu/arcgis/rest/services/BuyiCheng/listing/MapServer/0"
+            var listingLayer = new FeatureLayer({
+                url: listing_url,
+                popupTemplate: popTemplate
+            });
+
+            var neighbourhoodLayer = new FeatureLayer({
+                url: "https://gis-portal.usc.edu/arcgis/rest/services/BuyiCheng/neighbourhoods/MapServer/0",
+                popupTemplate: popNeighbour,
+                labelingInfo: [labelClass]
+            });
+            map.add(neighbourhoodLayer);
+            map.add(listingLayer);
+            var resultLayer = null;
+            const webStyleSymbol = new WebStyleSymbol({
+              name: "tear-pin-2",
+              styleName: "Esri2DPointSymbolsStyle"
+            });
+            listingLayer.popupEnabled = false;
+            neighbourhoodLayer.popupEnabled = false;
+            var poplistingcheck = dom.byId("poplistingcheck");
+
+            // 监听checkbox的change事件
+            on(poplistingcheck, "change", function () {
+                if (poplistingcheck.checked == true) {
+                    listingLayer.popupEnabled = true;
+                } else {
+                    listingLayer.popupEnabled = false;
+                }
+
+            });
+            var popneighbourhoodscheck = dom.byId("popneighbourhoodscheck");
+            on(popneighbourhoodscheck, "change", function () {
+                if (popneighbourhoodscheck.checked == true) {
+                    neighbourhoodLayer.popupEnabled = true;
+                } else {
+                    neighbourhoodLayer.popupEnabled = false;
+                }
+
+            });
+            var displaylisting = dom.byId("displaylisting");
+            on(displaylisting, "change", function () {
+                if (displaylisting.checked == true) {
+                    //map.add(listingLayer);
+                    listingLayer.visible = true
+                } else {
+                    //map.remove(listingLayer);
+                    listingLayer.visible = false
+                }
+
+            });
+            var displayneighbourhoods = dom.byId("displayneighbourhoods");
+            on(displayneighbourhoods, "change", function () {
+                if (displayneighbourhoods.checked == true) {
+                    //map.add(neighbourhoodLayer);
+                    neighbourhoodLayer.visible = true
+                } else {
+                    //map.remove(neighbourhoodLayer);
+                    neighbourhoodLayer.visible = false
+                }
+
+            });
+            var sqlLayer = new GraphicsLayer()
+            map.add(sqlLayer);
+            var sqlTask = new QueryTask({
+              url: listing_url
+            });
+
+            on(dom.byId("queryMap"),"click",function(){
+                if (resultLayer != null){
+                    map.remove(resultLayer)
+                }
+                sql_dict = produceSQLDict()
+                console.log(sql_dict)
+                result = ajaxMapQueryTL('MapView', sql_dict)
+                console.log("mresult:",result)
+                //console.log(typeof(result['outFields']))
+                index = result['outFields'].indexOf('neighbourhood')
+                if (index!=-1){
+                    result['outFields'][index]='neighbourh'
+                }
+                var sqlParams = new Query({
+                  where: result['where'].replace('neighbourhood','neighbourh'),
+                  returnGeometry: true,
+                  outFields: result['outFields'],
+                  maxRecordCountFactor: 5
+                });
+                sqlTask.execute(sqlParams).then(getSqlResults).catch(sqlPromiseRejected);
+            })
+            function getSqlResults(response) {
+                console.log(response)
+                field_pop = []
+                field_infos = []
+                for (i in response.fields){
+                    field_infos.push({
+                        name: response.fields[i].name,
+                        type: response.fields[i].type,
+                    })
+                    field_pop.push({
+                        fieldName: response.fields[i].name,
+                        label: response.fields[i].alias,
+                        format: {
+                            places: 0
+                        },
+                        visible: true
+                    })
+                }
+
+                var popResult = {
+                    title: "Attributes",
+                    content: [{
+                     type: "fields",
+                        fieldInfos: field_pop
+                    }]
+                }
+                resultLayer = new FeatureLayer({
+                           source: response.features,
+                           title:"result",
+                           objectIdField: "FID",
+                           fields:field_infos
+                 });
+                 //resultLayer.outFields = response.fields
+                 resultLayer.popupTemplate = popResult
+                 resultLayer.renderer = {
+                  type: "simple",  // autocasts as new SimpleRenderer()
+                    symbol:webStyleSymbol
+                };
+                map.add(resultLayer)
+                legend.layerInfos.push({layer: resultLayer,
+                    title: "Query Result"})
+                resultLayer.queryExtent().then(function (response) {
+                      view.goTo(response.extent).catch(function (error) {
+                           if (error.name != "AbortError") {
+                               console.error(error);
+                           }
+                      });
+                });
+      }
+      // Called each time the promise is rejected
+      function sqlPromiseRejected(error) {
+        console.log(error)
+        // console.error("Promise rejected: ", error.message);
+      }
+
+        on(dom.byId("SqlClear"), "click", function () {
+        if (resultLayer != null){
+             map.remove(resultLayer)
+        }
+        lastlegend = legend.layerInfos[legend.layerInfos.length-1]
+        for(i in legend){
+            if (legend[i] == "Query Result"){
+                legend.layerInfos.pop()
+            }
+        }
+
+        resultLayer = null
+      })
+        var legend = new Legend({
+                view: view,
+                layerInfos: [{
+                    layer: listingLayer,
+                    title: "Airbnb Houses/Apartments"
+                }, {
+                    layer: neighbourhoodLayer,
+                    title: "Neighbourhood"
+                }]
+            });
+            view.ui.add(legend, "bottom-left");
+
+        });
+
+
+
+
+
+
+
+</script>
+{% endmacro %}
+
+{% macro html() %}
+<div class="modal fade map-modal" id="mapModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog map-modal-dialog">
+        <div class="modal-content" style="width: 1200px; height: 800px; margin-left:-300px">
+            <div class="modal-header">
+                <h5 class="modal-title">Map View</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+            <div class="modal-body">
+
+                <div id="viewDiv"></div>
+
+                <div id="infoDiv" class="esri-widget">
+                    <h5>Popup:</h5>
+                    <div class="input-group mb-3" style="margin-left: 5%">
+                        <!-- <input type="checkbox" id="popcheck" checked data-dojo-type="dijit/form/CheckBox">
+                        <label for="dbox1">Allow Popup</label> -->
+                        <input type="checkbox" class="form-check-input" id="poplistingcheck">
+                        <label class="form-check-label">Allow Listing Popup</label>
+
+                    </div>
+                    <div class="input-group mb-3" style="margin-left: 5%">
+                    <input type="checkbox" class="form-check-input" id="popneighbourhoodscheck">
+                        <label class="form-check-label">Allow Neighbourhoods Popup</label>
+                        </div>
+                    <h5>Layers:</h5>
+                    <div class="input-group mb-3" style="margin-left: 5%">
+                        <!-- <input type="checkbox" id="popcheck" checked data-dojo-type="dijit/form/CheckBox">
+                        <label for="dbox1">Allow Popup</label> -->
+                        <input type="checkbox" class="form-check-input" id="displaylisting" checked>
+                        <label class="form-check-label">Display listing layer</label>
+                    </div>
+                    <div class="input-group mb-3" style="margin-left: 5%">
+                        <!-- <input type="checkbox" id="popcheck" checked data-dojo-type="dijit/form/CheckBox">
+                        <label for="dbox1">Allow Popup</label> -->
+                        <input type="checkbox" class="form-check-input" id="displayneighbourhoods" checked>
+                        <label class="form-check-label">Display neighbourhoods layer</label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer map-query">
+                <!--                <div class="">-->
+                <!--                    -->
+                <!--                </div>-->
+                <code style="margin-right: 50px;"></code>
+                <button class="btn btn-primary" id="queryMap">Query
+                </button>
+                 <button type="button" class="btn btn-secondary" id="SqlClear">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endmacro %}

@@ -1,0 +1,114 @@
+/* global*/
+.top, .mid, .bottom{
+    display: flex;
+    margin-bottom: 50px;
+}
+.btn-add {
+    margin-left: 5%;
+}
+.divider {
+    border-top: 1px dashed #8c8b8b;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+/* top */
+.top .input-group.dbms, .input-group.db{
+    width: 30% !important;
+    float: left;
+}
+.top .input-group.table{
+    width: 30% !important;
+    float: right;
+}
+.dropdown-dbms {
+    width: 80% !important;
+}
+.btn.dropdown-toggle {
+    width: 100% !important;
+}
+
+
+/* mid */
+.mid .left{
+    width: 46% !important;
+    margin-right: 3%;
+    margin-left: 1%
+}
+.mid .right{
+    width: 46% !important;
+    margin-left: 3%;
+    margin-right: 1%
+}
+.tab-content .tab-pane {
+    padding: 5%;
+}
+
+
+.line-group {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+.line-group .line {
+    display: inline-block;
+    width: 42%;
+    border-top: 1px solid #ccc ;
+}
+.line-group .txt {
+    display: inline-block !important;
+    vertical-align: -4px;
+}
+.add-attribute, .add-all-attribute, .remove-all-attribute{
+    width: 12% !important;
+    margin-left: 1% !important;
+}
+
+
+.nav-item h5{
+    color:#6c757d !important;
+}
+.nav-item .active h5{
+    color:black !important;
+}
+
+
+
+/* bottom */
+.bottom .card {
+    width: 100%;
+}
+.card .left {
+    float: left;
+    width: 47% !important;
+    margin-right: 2%;
+    margin-left: 1%
+}
+.card .right {
+    float: right;
+    width: 47% !important;
+    margin-right: 1%;
+    margin-left: 2%
+}
+#tags_tag {
+    width: 120px !important;
+}
+div.tagsinput {
+    width: 100% !important;
+}
+
+.bootstrap-tagsinput span {
+    margin-right: 1% !important;
+}
+
+#queryModal .dataTables_wrapper {
+    position: relative;
+    clear: both;
+    zoom: 1;
+    overflow-x: auto;
+}
+
+#example_wrapper{
+    max-height: 650px;
+    padding-bottom: 20px;
+}

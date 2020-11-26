@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ML2X</title>
+    {% block head_css %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/tagsinput.css') }}">
+<!--    <link rel="stylesheet" href="{{ url_for('static',filename='css/jquery.tagsinput.min.css') }}">-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+
+
+    {% endblock %}
+</head>
+<body>
+
+    <div class="container">
+        {% block container %}{% endblock %}
+    </div>
+
+
+    {% block tail_js %}
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/tagsinput.js') }}"></script>
+<!--    <script src="{{ url_for('static',filename='js/jquery.tagsinput.min.js') }}"></script>-->
+    <script src="{{ url_for('static',filename='js/jquery.cookie.min.js')}}"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+    {% endblock %}
+</body>
+</html>
